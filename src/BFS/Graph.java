@@ -6,73 +6,104 @@ import java.util.LinkedList;
 // This class represents a directed graph using adjacency list 
 // representation 
 class Graph {
-	private int V; // No. of vertices
-	private LinkedList<Integer> adj[]; // Adjacency Lists
+	int numNodos; // Numero de nodos
+	LinkedList<Integer> listaAdyacente[]; //Lista con las aristas
 
 	// Constructor
-	Graph(int v) {
-		V = v;
-		adj = new LinkedList[v];
-		for (int i = 0; i < v; ++i)
-			adj[i] = new LinkedList();
+	Graph(int numVertices) {
+		numNodos = numVertices;
+		listaAdyacente = new LinkedList[numVertices];
+		for (int i = 0; i < numVertices; ++i)
+			listaAdyacente[i] = new LinkedList<>();
 	}
 
-	// Function to add an edge into the graph
-	void addEdge(int v, int w) {
-		adj[v].add(w);
+	// Función para agregar arista y asignarle el destino
+	void agregarArista(int nodo, int destino) {
+		listaAdyacente[nodo].add(destino);
 	}
 
-	// prints BFS traversal from a given source s
-	void BFS(int s) {
-		// Mark all the vertices as not visited(By default
-		// set as false)
-		boolean visited[] = new boolean[V];
+	// Imprime el algoritmo BFS desde un nodo s
+	void BFS(int actual) {
+		// Marca los nodos como nodos no visitados
+		boolean visitados[] = new boolean[numNodos];
 
-		// Create a queue for BFS
-		LinkedList<Integer> queue = new LinkedList<Integer>();
+		// Crea una lista de espera para el algoritmo
+		LinkedList<Integer> listaEspera = new LinkedList<Integer>();
 
-		// Mark the current node as visited and enqueue it
-		visited[s] = true;
-		queue.add(s);
+		// Marca el nodo temp como visitado
+		visitados[actual] = true;
+		listaEspera.add(actual);
 
 		String camino = "";
 
-		while (queue.size() != 0) {
-			// Dequeue a vertex from queue and print it
-			s = queue.poll();
-			camino = camino + s + " ";
-			System.out.print("Nodo: " + s+"\n");
+		while (listaEspera.size() != 0) {
+			// Saca el nodo de la lista y lo imprime
+			actual = listaEspera.poll();
+			camino = camino + actual + " ";
+			System.out.print("Nodo: " + actual+"\n");
 
-			// Get all adjacent vertices of the dequeued vertex s
-			// If a adjacent has not been visited, then mark it
-			// visited and enqueue it
-			Iterator<Integer> i = adj[s].listIterator();
-			while (i.hasNext()) {
-				int n = i.next();
-				if (!visited[n]) {
-					visited[n] = true;
-					queue.add(n);
-					System.out.println("Cola: " + queue+"\n");
+			// Busca todos los nodos adyacentes del nodo actual
+			// Si el nodo adyacente no ha sido visitado, lo agrega
+			Iterator<Integer> nodoActual = listaAdyacente[actual].listIterator();
+			while (nodoActual.hasNext()) {
+				int nodoSiguiente = nodoActual.next();
+				if (!visitados[nodoSiguiente]) {
+					visitados[nodoSiguiente] = true;
+					listaEspera.add(nodoSiguiente);
+					System.out.println("Cola: " + listaEspera+"\n");
 				}
 			}
 		}
+		System.out.println("Camino con nodo: "+actual);
 		System.out.println(camino);
 	}
 
-	// Driver method to
 	public static void main(String args[]) {
-		Graph g = new Graph(4);
+		Graph g = new Graph(25);
 
-		g.addEdge(0, 1);
-		g.addEdge(0, 2);
-		g.addEdge(1, 2);
-		g.addEdge(2, 0);
-		g.addEdge(2, 3);
-		g.addEdge(3, 3);
-
-		System.out.println("Following is Breadth First Traversal " + "(starting from vertex 2)");
-
+		g.agregarArista(0, 1);
+		g.agregarArista(0, 5);
+		g.agregarArista(1, 0);
+		g.agregarArista(1, 2);
+		g.agregarArista(2, 1);
+		g.agregarArista(2, 7);
+		g.agregarArista(2, 3);
+		g.agregarArista(3, 2);
+		g.agregarArista(3, 4);
+		g.agregarArista(4, 3);
+		g.agregarArista(4, 9);
+		g.agregarArista(5, 0);
+		g.agregarArista(5, 10);
+		g.agregarArista(7, 2);
+		g.agregarArista(7, 12);
+		g.agregarArista(9, 4);
+		g.agregarArista(9, 14);
+		g.agregarArista(10, 5);
+		g.agregarArista(10, 15);
+		g.agregarArista(12, 7);
+		g.agregarArista(12, 17);
+		g.agregarArista(14, 9);
+		g.agregarArista(14, 19);
+		g.agregarArista(15, 10);
+		g.agregarArista(15, 20);
+		g.agregarArista(17, 12);
+		g.agregarArista(17, 22);
+		g.agregarArista(19, 14);
+		g.agregarArista(19, 24);
+		g.agregarArista(20, 15);
+		g.agregarArista(20, 21);
+		g.agregarArista(21, 20);
+		g.agregarArista(21, 22);
+		g.agregarArista(22, 21);
+		g.agregarArista(22, 23);
+		g.agregarArista(22, 17);
+		g.agregarArista(24, 23);
+		g.agregarArista(24, 19);
+		
+		g.BFS(6);
+		g.BFS(10);
 		g.BFS(2);
+		g.BFS(23);
 	}
 
 }
